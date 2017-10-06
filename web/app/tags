@@ -1,0 +1,5 @@
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+angular	/home/alon/speakup/web/app/views.py	/^def angular():$/;"	f	language:Python
+app	/home/alon/speakup/web/app/__init__.py	/^app = Flask(__name__)$/;"	v	language:Python
+hello	/home/alon/speakup/web/app/views.py	/^def hello():$/;"	f	language:Python
+redis	/home/alon/speakup/web/app/__init__.py	/^redis = Redis(host='redis', port=6379)$/;"	v	language:Python
