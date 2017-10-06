@@ -5,10 +5,16 @@ services:
     ports:
       - "8765:8765"
   web:
-    build: .
+    build: ./web
     ports:
      - "5000:5000"
     volumes:
         - ./web:/code:Z
+#    depends_on:
+        #        - nginx
   redis:
     image: "redis:alpine"
+  nginx:
+      build: ./nginx
+      ports:
+          - "80:80"
