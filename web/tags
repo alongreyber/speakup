@@ -3,4 +3,5 @@ context	/home/alon/speakup/web/main.py	/^context = SSL.Context(SSL.SSLv23_METHOD
 host	/home/alon/speakup/web/bjoern.py	/^host = '0.0.0.0'$/;"	v	language:Python
 NUM_WORKERS	/home/alon/speakup/web/bjoern.py	/^NUM_WORKERS = 2$/;"	v	language:Python
 port	/home/alon/speakup/web/bjoern.py	/^port = 5000$/;"	v	language:Python
+ssl_context	/home/alon/speakup/web/main.py	/^            ssl_context='ad-hoc')$/;"	v	language:Python
 worker_pids	/home/alon/speakup/web/bjoern.py	/^worker_pids = []$/;"	v	language:Python
