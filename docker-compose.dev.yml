@@ -9,3 +9,4 @@ services:
         - ./web:/code:Z
     ports:
         - "5000:5000"
+    command: python main.py

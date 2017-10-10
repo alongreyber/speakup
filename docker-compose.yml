@@ -1,8 +1,11 @@
 version: "2"
 services:
   gentle:
+    restart: always
     image: "lowerquality/gentle"
   web:
+    restart: always
     build: ./web
   redis:
+    restart: always
     image: "redis:alpine"

@@ -1,5 +1,8 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+Alignment	/home/alon/speakup/web/app/forms.py	/^class Alignment(Form):$/;"	c	language:Python
 angular	/home/alon/speakup/web/app/views.py	/^def angular():$/;"	f	language:Python
 app	/home/alon/speakup/web/app/__init__.py	/^app = Flask(__name__)$/;"	v	language:Python
-hello	/home/alon/speakup/web/app/views.py	/^def hello():$/;"	f	language:Python
+audio	/home/alon/speakup/web/app/forms.py	/^    audio = FileField('Audio File', validators=[DataRequired()])$/;"	v	language:Python	class:Alignment
 redis	/home/alon/speakup/web/app/__init__.py	/^redis = Redis(host='redis', port=6379)$/;"	v	language:Python
+submit_gentle	/home/alon/speakup/web/app/views.py	/^def submit_gentle():$/;"	f	language:Python
+transcript	/home/alon/speakup/web/app/forms.py	/^    transcript = FileField('Transcript Text File', validators=[DataRequired()])$/;"	v	language:Python	class:Alignment

@@ -1,9 +1,14 @@
 from app import app
 from flask import render_template
+import app.forms as Forms
 
-@app.route('/')
-def hello():
-    return render_template('submit_gentle.html')
+@app.route('/submit_gentle', methods=['GET', 'POST'])
+def submit_gentle():
+    alignment_form = Forms.Alignment()
+    if alignment_form.validate_on_submit():
+        return render_template('gentle_result.html')
+    return render_template('submit_gentle.html',
+            alignment_form=alignment_form)
 
 @app.route('/angular')
 def angular():

@@ -1,4 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-  Welcome! This is where you will be able to submit files to run alignment.
+<script src="https://cdn.webrtc-experiment.com/MediaStreamRecorder.js"> </script>
+<script type="text/javascript" src="{{ url_for('static', filename='mediaRecording.js') }}"></script>
+
+<div class="row">
+    <div class="col-sm-4">
+	<!-- TODO: Figure out how to draw a circle around this -->
+	<i class="material-icons btn badge" style="font-size: 80px">mic</i>	
+    </div>
+    <div class="col-sm-8">
+    </div>
+</div>
 {% endblock %}
