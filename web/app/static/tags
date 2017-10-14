@@ -1,7 +1,6 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
-audio	/home/alon/speakup/web/app/static/mediaRecording.js	/^var mediaConstraints = {$/;"	p	language:JavaScript	class:mediaConstraints
-mediaRecorder.ondataavailable	/home/alon/speakup/web/app/static/mediaRecording.js	/^    mediaRecorder.mimeType = 'audio\/wav'; \/\/ check this line for audio\/wav$/;"	f	language:JavaScript
-onMediaError	/home/alon/speakup/web/app/static/mediaRecording.js	/^function onMediaError(e) {$/;"	f	language:JavaScript
-onMediaSuccess	/home/alon/speakup/web/app/static/mediaRecording.js	/^function onMediaSuccess(stream) {$/;"	f	language:JavaScript
-upload	/home/alon/speakup/web/app/static/mediaRecording.js	/^function upload(blob) {$/;"	f	language:JavaScript
-video	/home/alon/speakup/web/app/static/mediaRecording.js	/^    audio: true,$/;"	p	language:JavaScript	class:mediaConstraints
+app	/home/alon/speakup/web/app/static/gentleSubmission.js	/^var app = angular.module('app', []);$/;"	v	language:JavaScript
+mediaRecorder.ondataavailable	/home/alon/speakup/web/app/static/gentleSubmission.js	/^    mediaRecorder.mimeType = 'audio\/wav'; $/;"	f	language:JavaScript
+onMediaError	/home/alon/speakup/web/app/static/gentleSubmission.js	/^function onMediaError(e) {$/;"	f	language:JavaScript
+onMediaSuccess	/home/alon/speakup/web/app/static/gentleSubmission.js	/^function onMediaSuccess(stream) {$/;"	f	language:JavaScript
+upload	/home/alon/speakup/web/app/static/gentleSubmission.js	/^function upload(blob) {$/;"	f	language:JavaScript

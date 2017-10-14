@@ -1,14 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
 <script src="https://cdn.webrtc-experiment.com/MediaStreamRecorder.js"> </script>
-<script type="text/javascript" src="{{ url_for('static', filename='mediaRecording.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='gentleSubmission.js') }}"></script>
+<div ng-controller="gentleSubmission">
 
-<div class="row">
+<div class="row well">
     <div class="col-sm-4">
 	<!-- TODO: Figure out how to draw a circle around this instead of this weird square -->
-	<i class="material-icons btn badge" style="font-size: 80px">mic</i>	
+	<i class="material-icons btn badge " style="font-size: 80px">mic</i>	
     </div>
     <div class="col-sm-8">
+	<h1>Record your voice</h1>
     </div>
+</div>
+
+<div class="row well" >
+    <div class="col-sm-4">
+	<i class="material-icons btn badge" style="font-size: 80px">file_upload</i>
+    </div>
+    <div class="col-sm-8">
+	<h1>Upload a file</h1>
+    </div>
+</div>
+
 </div>
 {% endblock %}
