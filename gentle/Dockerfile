@@ -18,5 +18,5 @@ RUN ./install.sh
 COPY . /gentle
 RUN pip install .
 
-EXPOSE 80
-CMD python serve.py
+#EXPOSE 80
+#CMD python serve.py
