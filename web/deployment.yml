@@ -1,0 +1,25 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+    name: web-deployment
+    labels:
+        run: web
+    annotations:
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            run: web
+    template:
+        metadata:
+            labels:
+                run: web
+        spec:
+            containers:
+            - name: web
+              image: 127.0.0.1:30400/web:latest
+              imagePullPolicy: Always
+              ports:
+              - containerPort: 80
+                name: http
+                protocol: TCP

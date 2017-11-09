@@ -5,21 +5,27 @@
 <div ng-controller="gentleSubmission">
 
 <div class="row well">
-    <div class="col-sm-4">
+    <div class="col-sm-1">
 	<!-- TODO: Figure out how to draw a circle around this instead of this weird square -->
 	<i class="material-icons btn badge " style="font-size: 80px">mic</i>	
     </div>
-    <div class="col-sm-8">
+    <div class="col-sm-11">
 	<h1>Record your voice</h1>
     </div>
 </div>
 
 <div class="row well" >
-    <div class="col-sm-4">
-	<i class="material-icons btn badge" style="font-size: 80px">file_upload</i>
+    <div class="col-sm-1">
+	<label class="btn btn-default btn-file badge">
+	    <i class="material-icons" style="font-size: 80px">file_upload</i>
+	    <input type="file" style="display: none;">
+	</label>
     </div>
-    <div class="col-sm-8">
+    <div class="col-sm-3">
 	<h1>Upload a file</h1>
+    </div>
+    <div class="col-sm-8" style="border-style: dashed">
+	<h3>Drop files here. Actually it doesn't work.</h3>	
     </div>
 </div>
 

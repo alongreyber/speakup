@@ -1,6 +1,11 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
 host	/home/alon/speakup/web/bjoern.py	/^host = '0.0.0.0'$/;"	v	language:Python
+include_package_data	/home/alon/speakup/web/setup.py	/^    include_package_data=True,$/;"	v	language:Python
+install_requires	/home/alon/speakup/web/setup.py	/^    install_requires=[$/;"	v	language:Python
+name	/home/alon/speakup/web/setup.py	/^    name='app',$/;"	v	language:Python
 NUM_WORKERS	/home/alon/speakup/web/bjoern.py	/^NUM_WORKERS = 2$/;"	v	language:Python
+packages	/home/alon/speakup/web/setup.py	/^    packages=['app'],$/;"	v	language:Python
 port	/home/alon/speakup/web/bjoern.py	/^port = 5000$/;"	v	language:Python
+sass_manifests	/home/alon/speakup/web/setup.py	/^    sass_manifests={$/;"	v	language:Python
 ssl_context	/home/alon/speakup/web/main.py	/^            ssl_context='ad-hoc')$/;"	v	language:Python
 worker_pids	/home/alon/speakup/web/bjoern.py	/^worker_pids = []$/;"	v	language:Python

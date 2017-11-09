@@ -1,0 +1,2 @@
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+REGIP	/home/alon/speakup/Makefile	/^	docker run -d -e "REGIP=`minikube ip`" --name socat-registry -p 30400:5000 chadmoon\/socat:latest bash -c "socat TCP4-LISTEN:5000,fork,reuseaddr TCP4:`minikube ip`:30400"$/;"	m	language:Make

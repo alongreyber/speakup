@@ -1,0 +1,32 @@
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+args	/home/alon/speakup/gentle/serve.py	/^    args = parser.parse_args()$/;"	v	language:Python
+description	/home/alon/speakup/gentle/serve.py	/^        description='Align a transcript to audio by generating a new language model.')$/;"	v	language:Python
+getChild	/home/alon/speakup/gentle/serve.py	/^    def getChild(self, path, req):$/;"	m	language:Python	class:TranscriptionZipper
+getChild	/home/alon/speakup/gentle/serve.py	/^    def getChild(self, uid, req):$/;"	m	language:Python	class:TranscriptionsController
+get_status	/home/alon/speakup/gentle/serve.py	/^    def get_status(self, uid):$/;"	m	language:Python	class:Transcriber
+help	/home/alon/speakup/gentle/serve.py	/^                        help='number of alignment threads')$/;"	v	language:Python
+help	/home/alon/speakup/gentle/serve.py	/^                        help='number of full-transcription threads (memory intensive)')$/;"	v	language:Python
+help	/home/alon/speakup/gentle/serve.py	/^                        help='port number to run http server on')$/;"	v	language:Python
+help	/home/alon/speakup/gentle/serve.py	/^                        help='the log level (DEBUG, INFO, WARNING, ERROR, or CRITICAL)')$/;"	v	language:Python
+help	/home/alon/speakup/gentle/serve.py	/^                       help='host to run http server on')$/;"	v	language:Python
+LazyZipper	/home/alon/speakup/gentle/serve.py	/^class LazyZipper(Insist):$/;"	c	language:Python
+log_level	/home/alon/speakup/gentle/serve.py	/^    log_level = args.log.upper()$/;"	v	language:Python
+next_id	/home/alon/speakup/gentle/serve.py	/^    def next_id(self):$/;"	m	language:Python	class:Transcriber
+on_progress	/home/alon/speakup/gentle/serve.py	/^        def on_progress(p):$/;"	f	language:Python	function:Transcriber.transcribe
+out_dir	/home/alon/speakup/gentle/serve.py	/^    def out_dir(self, uid):$/;"	m	language:Python	class:Transcriber
+parser	/home/alon/speakup/gentle/serve.py	/^    parser = argparse.ArgumentParser($/;"	v	language:Python
+render_GET	/home/alon/speakup/gentle/serve.py	/^    def render_GET(self, req):$/;"	m	language:Python	class:TranscriptionStatus
+render_POST	/home/alon/speakup/gentle/serve.py	/^    def render_POST(self, req):$/;"	m	language:Python	class:TranscriptionsController
+serialize_computation	/home/alon/speakup/gentle/serve.py	/^    def serialize_computation(self, outpath):$/;"	m	language:Python	class:LazyZipper
+serve	/home/alon/speakup/gentle/serve.py	/^def serve(port=8765, interface='0.0.0.0', installSignalHandlers=0, nthreads=4, ntranscriptionthreads=2, data_dir=get_datadir('webdata')):$/;"	f	language:Python
+transcribe	/home/alon/speakup/gentle/serve.py	/^    def transcribe(self, uid, transcript, audio, async, **kwargs):$/;"	m	language:Python	class:Transcriber
+Transcriber	/home/alon/speakup/gentle/serve.py	/^class Transcriber():$/;"	c	language:Python
+TranscriptionsController	/home/alon/speakup/gentle/serve.py	/^class TranscriptionsController(Resource):$/;"	c	language:Python
+TranscriptionStatus	/home/alon/speakup/gentle/serve.py	/^class TranscriptionStatus(Resource):$/;"	c	language:Python
+TranscriptionZipper	/home/alon/speakup/gentle/serve.py	/^class TranscriptionZipper(Resource):$/;"	c	language:Python
+write_result	/home/alon/speakup/gentle/serve.py	/^            def write_result(result):$/;"	f	language:Python	function:TranscriptionsController.render_POST
+__init__	/home/alon/speakup/gentle/serve.py	/^    def __init__(self, cachedir, transcriber):$/;"	m	language:Python	class:TranscriptionZipper
+__init__	/home/alon/speakup/gentle/serve.py	/^    def __init__(self, cachedir, transcriber, uid):$/;"	m	language:Python	class:LazyZipper
+__init__	/home/alon/speakup/gentle/serve.py	/^    def __init__(self, data_dir, nthreads=4, ntranscriptionthreads=2):$/;"	m	language:Python	class:Transcriber
+__init__	/home/alon/speakup/gentle/serve.py	/^    def __init__(self, status_dict):$/;"	m	language:Python	class:TranscriptionStatus
+__init__	/home/alon/speakup/gentle/serve.py	/^    def __init__(self, transcriber):$/;"	m	language:Python	class:TranscriptionsController

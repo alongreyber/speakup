@@ -3,6 +3,7 @@ Alignment	/home/alon/speakup/web/app/forms.py	/^class Alignment(Form):$/;"	c	lan
 angular	/home/alon/speakup/web/app/views.py	/^def angular():$/;"	f	language:Python
 app	/home/alon/speakup/web/app/__init__.py	/^app = Flask(__name__)$/;"	v	language:Python
 audio	/home/alon/speakup/web/app/forms.py	/^    audio = FileField('Audio File', validators=[DataRequired()])$/;"	v	language:Python	class:Alignment
+ip	/home/alon/speakup/web/app/views.py	/^def ip():$/;"	f	language:Python
 redis	/home/alon/speakup/web/app/__init__.py	/^redis = Redis(host='redis', port=6379)$/;"	v	language:Python
 submit_gentle	/home/alon/speakup/web/app/views.py	/^def submit_gentle():$/;"	f	language:Python
 transcript	/home/alon/speakup/web/app/forms.py	/^    transcript = FileField('Transcript Text File', validators=[DataRequired()])$/;"	v	language:Python	class:Alignment
