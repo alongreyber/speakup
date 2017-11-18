@@ -1,22 +1,23 @@
 FROM ubuntu:16.04
 
-RUN DEBIAN_FRONTEND=noninteractive && \
-	apt-get update && \
-	apt-get install -y zlib1g-dev automake autoconf git \
-		libtool subversion libatlas3-base ffmpeg python-pip \
-		python-dev wget unzip && \
-	apt-get clean
+RUN echo -e "*************\nGo get some coffee. This will take a while\n*************"
+RUN mkdir gentle
+WORKDIR gentle
 
-COPY install* /gentle/
-COPY requirements.txt /gentle/
-COPY ext/ /gentle/ext/
+RUN apt update && \
+               apt install -y git && \
+	       apt autoremove
+ADD ext/ ./ext
+ADD install* ./
+# Needed to initialize kaldi submodule
+ADD .git/ ./.git
+ADD .gitmodules .
 
-# This is the long step so we execute it before copying the code
-WORKDIR /gentle
-RUN ./install.sh
+RUN bash install.sh
+ADD . /gentle
 
-COPY . /gentle
-RUN pip install .
+EXPOSE 8765
 
-#EXPOSE 80
-#CMD python serve.py
+VOLUME /gentle/webdata
+
+CMD python serve.py

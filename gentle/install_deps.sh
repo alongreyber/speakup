@@ -9,9 +9,9 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	apt-get update -qq
 	apt-get install -y zlib1g-dev automake autoconf git \
 		libtool subversion libatlas3-base python-pip \
-		python-dev python3-dev wget unzip libjansson-dev
+		python-dev wget unzip
 	apt-get install -y ffmpeg || echo -n  "\n\nYou have to install ffmpeg from a PPA or from https://ffmpeg.org before you can run gentle\n\n"
-	pip install -r requirements.txt
+	pip install twisted
 elif [[ "$OSTYPE" == "darwin"* ]]; then
 	brew install ffmpeg libtool automake autoconf wget
 

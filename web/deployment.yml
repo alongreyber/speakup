@@ -17,7 +17,7 @@ spec:
         spec:
             containers:
             - name: web
-              image: 127.0.0.1:30400/web:latest
+              image: 127.0.0.1:30400/web:v2
               imagePullPolicy: Always
               ports:
               - containerPort: 80

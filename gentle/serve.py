@@ -250,11 +250,11 @@ if __name__=='__main__':
         description='Align a transcript to audio by generating a new language model.')
     parser.add_argument('--host', default="0.0.0.0",
                        help='host to run http server on')
-    parser.add_argument('--port', default=80, type=int,
+    parser.add_argument('--port', default=8765, type=int,
                         help='port number to run http server on')
-    parser.add_argument('--nthreads', default=1, type=int,
+    parser.add_argument('--nthreads', default=multiprocessing.cpu_count(), type=int,
                         help='number of alignment threads')
-    parser.add_argument('--ntranscriptionthreads', default=1, type=int,
+    parser.add_argument('--ntranscriptionthreads', default=2, type=int,
                         help='number of full-transcription threads (memory intensive)')
     parser.add_argument('--log', default="INFO",
                         help='the log level (DEBUG, INFO, WARNING, ERROR, or CRITICAL)')
