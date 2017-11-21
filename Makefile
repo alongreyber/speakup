@@ -8,16 +8,16 @@ start: # Start minikube and dev related deployments
 	kubectl --namespace dev apply -f local-registry.yml
 	
 update: # Update running kubernetes cluster with current code
-	docker stop socat-registry; docker rm socat-registry || true
-	# Docker registry doesn't accept HTTP connections so set up a simple forwarding instance
-	docker run -d -e "REGIP=`minikube ip`" --name socat-registry -p 30400:5000 chadmoon/socat:latest bash -c "socat TCP4-LISTEN:5000,fork,reuseaddr TCP4:`minikube ip`:30400"
+	# Start local docker registry forwarding container
+	docker run -d -e "REGIP=`minikube ip`" -p 30400:5000 chadmoon/socat:latest bash -c "socat TCP4-LISTEN:5000,fork,reuseaddr TCP4:`minikube ip`:30400" || true
 	# docker build, docker push everything
-	# For developemnt add a randomly generated tag
 	docker build -t 127.0.0.1:30400/web:latest -f web/Dockerfile web
 	docker push 127.0.0.1:30400/web:latest
 	docker build -t 127.0.0.1:30400/gentle:latest -f gentle/Dockerfile gentle
 	docker push 127.0.0.1:30400/gentle:latest
-	@docker stop socat-registry
+	# Deleting all pods makes them re-pull the latest image
+	kubectl delete --all --grace-period=0 --force=true pods
+	kubectl apply -f manifests/
 
 install:
 	# Docker (Latest stable version)

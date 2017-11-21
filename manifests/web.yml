@@ -17,9 +17,22 @@ spec:
         spec:
             containers:
             - name: web
-              image: 127.0.0.1:30400/web:v2
+              image: 127.0.0.1:30400/web:latest
               imagePullPolicy: Always
               ports:
               - containerPort: 80
                 name: http
                 protocol: TCP
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: web-service
+  labels:
+      run: web
+spec:
+  selector:
+    run: web
+  ports:
+  - port: 80
+  type: NodePort
