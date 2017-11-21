@@ -10,8 +10,6 @@ RUN apt update && \
 ADD ext/ ./ext
 ADD install* ./
 # Needed to initialize kaldi submodule
-ADD .git/ ./.git
-ADD .gitmodules .
 
 RUN bash install.sh
 ADD . /gentle
