@@ -12,8 +12,9 @@ RUN apt update && apt install $run_packages
 
 #RUN apt remove $build_packages
 
-ADD . /code
+ADD requirements.txt /code
 RUN pip install -r requirements.txt
+ADD . /code
 
 # Default to our production web server
 CMD gunicorn --bind 0.0.0.0:80 main:app
