@@ -2,60 +2,93 @@
 {% block content %}
 <script src="https://cdn.webrtc-experiment.com/MediaStreamRecorder.js"> </script>
 <script type="text/javascript" src="{{ url_for('static', filename='gentleSubmission.js') }}"></script>
-<form method="POST">
+<form method="POST" action="/submit_alignment">
+{{ alignment_form.hidden_tag() }}
 <div ng-controller="gentleSubmission">
 
+
 <div class="row">
-    <h1 class="col-sm-2 col-sm-offset-5"> Submit an audio file </h1>
+    <div class="col">
+	<h2> Submit an audio file <h2>
+    <div class="card-group">
+        <div class="card" style="width: 20rem;">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" >
+                    <div style="border-style: dashed; height: 10rem;">
+                        <h4 class="text-center"> Drop here </h4>
+                    </div>
+                </li>
+            </ul>
+            <div class="card-block">
+                Or click here 
+                <div class="text-center">
+                    <label class="btn btn-primary" style="width: 8rem;">
+                        {{ alignment_form.audio(style="display: none") }}
+                        <i class="material-icons" style="font-size: 80px">file_upload</i>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="col">
+    </div>
 </div>
 
-<div class="row well">
-    <div class="col-sm-1">
+<hr />
+
+
+
+<div class="row">
+    <h1 class="col col-offset-5"> Submit an audio file </h1>
+</div>
+
+<div class="row card">
+    <div class="col-1">
 	<!-- TODO: Figure out how to draw a circle around this instead of this weird square -->
 	<i class="material-icons btn badge " style="font-size: 80px">mic</i>	
     </div>
-    <div class="col-sm-11">
+    <div class="col">
 	<h1>Record your voice</h1>
     </div>
 </div>
-<div class="row well" >
-    <div class="col-sm-1">
-	<label class="btn btn-default btn-file badge">
-	    <i class="material-icons" style="font-size: 80px">file_upload</i>
+<div class="row card" >
+    <div class="col-1">
+	<label class="btn btn-primary">
 	    {{ alignment_form.audio(style="display: none") }}
+	    <i class="material-icons" style="font-size: 80px">file_upload</i>
 	</label>
     </div>
-    <div class="col-sm-3">
+    <div class="col">
 	<h1>Upload a file</h1>
     </div>
-    <div class="col-sm-8" style="border-style: dashed">
+    <div class="col" style="border-style: dashed">
 	<h3>Drop files here. Actually it doesn't work.</h3>	
     </div>
 </div>
 
 <div class="row">
-    <h1 class="col-sm-2 col-sm-offset-5"> Submit a transcript </h1>
+    <h1 class="col col-offset-5"> Submit a transcript </h1>
 </div>
 
-<div class="row well" >
-    <div class="col-sm-1">
+<div class="row card" >
+    <div class="col-1">
 	<label class="btn btn-default btn-file badge">
 	    <i class="material-icons" style="font-size: 80px">file_upload</i>
 	    {{ alignment_form.transcript(style="display: none") }}
 	</label>
     </div>
-    <div class="col-sm-3">
+    <div class="col">
 	<h1>Upload a file</h1>
     </div>
-    <div class="col-sm-8" style="border-style: dashed">
+    <div class="col" style="border-style: dashed">
 	<h3>Drop files here. Actually it doesn't work.</h3>	
     </div>
 </div>
 
 <div class="row">
-	<label class="col-sm-2 col-sm-offset-5 btn btn-default btn-file badge">
-	    <input type="submit">Submit</submit>
-	</label>
+    {{ alignment_form.send }}
 </div>
 
 </div>

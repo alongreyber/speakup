@@ -5,12 +5,18 @@ import app.forms as Forms
 # Temporary
 import socket
 
+@app.route('/submit_alignment', methods=['POST'])
+def submit_alignment():
+    alignment_form = Forms.Alignment(request.form)
+    if(alignment_form.validate()):
+        return 'Form validation success!'
+    else:
+        return 'Form validation failed'
+
+
 @app.route('/submit_gentle', methods=['GET', 'POST'])
 def submit_gentle():
-    app.logger.info('Hit submit_gentle endpoint with method ' + request.method)
     alignment_form = Forms.Alignment(request.form)
-    if alignment_form.validate_on_submit():
-        return render_template('gentle_result.html')
     return render_template('submit_gentle.html',
             alignment_form=alignment_form)
 
