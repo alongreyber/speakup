@@ -9,4 +9,4 @@ set -e
 (cd ext && ./install_kaldi.sh)
 
 ./install_models.sh
-cd ext && make depend && make
+cd ext && make -j5 depend && make -j5

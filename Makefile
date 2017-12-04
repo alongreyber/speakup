@@ -4,8 +4,8 @@ start: # Start minikube and dev related deployments
 	# Put everything that doesn't run the actual application
 	# in the dev namespace. This command creates a local registry we
 	# can push docker images to
-	kubectl create namespace dev || true
-	kubectl --namespace dev apply -f local-registry.yml
+	kubectl create namespace dev | true
+	kubectl --namespace dev apply -f manifests-dev/
 	
 update: # Update running kubernetes cluster with current code
 	# Start local docker registry forwarding container
@@ -19,15 +19,26 @@ update: # Update running kubernetes cluster with current code
 	kubectl delete --all --grace-period=0 --force=true pods
 	kubectl apply -f manifests/
 
-install:
-	# Docker (Latest stable version)
-	sudo apt-get update
-	sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
+install: # Install dependencies. No checking for if they are already installed
+	sudo apt update
+	sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+	# Docker (latest stable version)
 	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-	sudo apt-get update && sudo apt-get install docker-ce
-	# Minikube v0.18.0
-	curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.18.0/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
-	# Kubectl (Latest)
-	curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+	sudo add-apt-repository \
+	    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+	    $(shell lsb_release -cs) \
+	    stable"
+	sudo apt update && sudo apt install -y docker-ce
+	# Enable docker for non-root
+	sudo groupadd docker | true
+	sudo gpasswd -a ${USER} docker
+	newgrp docker
+	# Virtualbox (5.2)
+	echo "deb http://download.virtualbox.org/virtualbox/debian xenial contrib" > /etc/apt/sources.list
+	wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+	sudo apt update && sudo apt install virtualbox-5.2
+	# Minikube v0.18.0 - contains kubernetes server version v1.6
+	curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.24.0/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+	# Kubernetes client v1.6
+	curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.6.13/bin/linux/amd64/kubectl
 	chmod +x kubectl && sudo mv kubectl /usr/local/bin/
