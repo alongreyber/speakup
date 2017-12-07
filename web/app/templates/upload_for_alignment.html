@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<script src="https://cdn.webrtc-experiment.com/MediaStreamRecorder.js"> </script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/upload_for_alignment.scss.css')}}">
+<form method="POST" action="/submit_alignment">
+{{ alignment_form.hidden_tag() }}
+<div class="upload-container" ng-controller="gentleSubmission">
+
+<div class="main-title card">
+    <img class="card-img-top" src="..." alt="Let's get started">
+</div>
+
+<div class="a-title upload-container-header">
+    <h2> Submit an audio file <h2>
+</div>
+
+<div class="and-area upload-container-header">
+    <h2> and <h2>
+</div>
+
+<div class="t-title upload-container-header">
+    <h2> Submit a transcript <h2>
+</div>
+
+<div class="upload-card-a card">
+    <div class="card-title">
+	Upload
+    </div>
+    <ul class="list-group list-group-flush">
+	<li class="list-group-item" >
+	    <div style="border-style: dashed;">
+		<h4 class="text-center"> Drop here </h4>
+	    </div>
+	</li>
+    </ul>
+    <div class="card-block">
+	Or click here 
+	<div class="text-center">
+	    <label class="btn btn-primary" style="width: 8rem;">
+		{{ alignment_form.audio(style="display: none") }}
+		<i class="material-icons" style="font-size: 80px">file_upload</i>
+	    </label>
+	</div>
+    </div>
+</div>
+
+<div class="record-card-a card">
+    <!-- TODO: Figure out how to draw a circle around this instead of this weird square -->
+    <i class="material-icons btn badge " style="font-size: 80px">mic</i>	
+</div>
+
+
+
+
+</div>
+</form>
+{% endblock %}

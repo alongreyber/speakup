@@ -14,15 +14,11 @@ def submit_alignment():
         return 'Form validation failed'
 
 
-@app.route('/submit_gentle', methods=['GET', 'POST'])
-def submit_gentle():
+@app.route('/alignment', methods=['GET'])
+def alignment():
     alignment_form = Forms.Alignment(request.form)
-    return render_template('submit_gentle.html',
+    return render_template('upload_for_alignment.html',
             alignment_form=alignment_form)
-
-@app.route('/angular')
-def angular():
-    return render_template('angular.html')
 
 @app.route('/ip')
 def ip():

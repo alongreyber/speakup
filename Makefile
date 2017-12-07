@@ -8,6 +8,7 @@ start: # Start minikube and dev related deployments
 	kubectl --namespace dev apply -f manifests-dev/
 	
 update: # Update running kubernetes cluster with current code
+	./sass/update_css.sh
 	# Start local docker registry forwarding container
 	docker run -d -e "REGIP=`minikube ip`" -p 30400:5000 chadmoon/socat:latest bash -c "socat TCP4-LISTEN:5000,fork,reuseaddr TCP4:`minikube ip`:30400" || true
 	# docker build, docker push everything

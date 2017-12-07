@@ -1,4 +1,5 @@
 *.pyc
 *.swap
 *.swp
+*.scss.css
 tags

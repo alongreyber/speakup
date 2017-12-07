@@ -3,5 +3,4 @@ redis
 gunicorn
 Flask-WTF
 pyOpenSSL
-libsass
 pymongo

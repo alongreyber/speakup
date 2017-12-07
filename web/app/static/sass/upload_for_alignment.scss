@@ -1,0 +1,49 @@
+// a is for audio, t is for transcript
+.upload-container {
+	display: grid;
+	grid-template-columns: auto auto auto auto auto;
+	grid-template-rows: 20% 10% auto 10%;
+	grid-template-areas:
+		"main-title main-title main-title main-title main-title"
+       		"a-title a-title and-area t-title t-title"
+		"upload-card-a record-card-a . upload-card-t record-card-t"
+		"submit submit submit submit submit";
+}
+
+.upload-container-header {
+    justify-self: center;
+}
+
+.main-title {
+    justify-self: center;
+    grid-area: main-title;
+}
+
+.a-title {
+    grid-area: a-title;
+}
+
+.t-title {
+    grid-area: t-title;
+}
+
+.and-area {
+    grid-area: and-area;
+}
+
+
+.upload-card-a {
+    grid-area: upload-card-a;
+}
+.record-card-a {
+    grid-area: record-card-a;
+}
+.upload-card-t {
+    grid-area: upload-card-a;
+}
+.record-card-t {
+    grid-area: record-card-t;
+}
+.submit {
+    grid-area: submit;
+}
