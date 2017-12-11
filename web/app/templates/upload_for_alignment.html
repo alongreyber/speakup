@@ -38,14 +38,27 @@
     <h3 class="card-title">
 	Record
     </h3>
-    <p class="card-text"> Press the button below to start recording.</p>
+    <div class="card-block">
+	<p class="card-text"> Press the button below to start recording.</p>
+    </div>
     <div class="card-block">
 	<!-- TODO: Figure out how to draw a circle around this instead of this weird square -->
 	<i class="material-icons btn btn-primary" style="font-size: 80px">mic</i>	
     </div>
 </div>
 
+<div class="record-card-t card text-center">
+    <h3 class="card-title">Type</h3>
+    <div class="card-block" style="padding: 0.25rem">
+	<textarea rows="10" cols="18"></textarea>
+    </div>
+</div>
 
+<div class="submit">
+    <div>
+	{{ alignment_form.send(class="btn btn-default") }}
+    </div>
+</div>
 
 
 </div>

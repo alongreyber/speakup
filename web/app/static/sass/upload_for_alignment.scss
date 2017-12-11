@@ -1,8 +1,9 @@
 // a is for audio, t is for transcript
 .upload-container {
 	display: grid;
-	grid-template-columns: auto auto auto auto auto;
-	grid-template-rows: 20% 10% auto 10%;
+	// Grid is 5 columns, 4 rows
+	grid-template-columns: 22% 22% auto 22% 22%;
+	grid-template-rows: 20% 10% auto 5%;
 	grid-template-areas:
 		"main-title main-title main-title main-title main-title"
        		"a-title a-title and-area t-title t-title"
@@ -45,6 +46,9 @@
 }
 .submit {
     grid-area: submit;
+    div {
+	text-align: center;
+    }
 }
 
 

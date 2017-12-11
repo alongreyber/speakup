@@ -23,4 +23,4 @@ def alignment():
 @app.route('/ip')
 def ip():
     ip_addr = socket.gethostbyname(socket.gethostname())
-    return "Hello! My IP is " + str(ip_addr)
+    return "Hello! My internal cluster IP is " + str(ip_addr)

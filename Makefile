@@ -16,9 +16,10 @@ update: # Update running kubernetes cluster with current code
 	docker push 127.0.0.1:30400/web:latest
 	docker build -t 127.0.0.1:30400/gentle:latest -f gentle/Dockerfile gentle
 	docker push 127.0.0.1:30400/gentle:latest
-	# Deleting all pods makes them re-pull the latest image
-	kubectl delete --all --grace-period=0 --force=true pods
 	kubectl apply -f manifests/
+	# Add a small change to the deployments so that a rollout is triggered
+	kubectl patch deployment web-deployment -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
+	kubectl patch statefulsets mongo -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
 
 install: # Install dependencies. No checking for if they are already installed
 	sudo apt update
