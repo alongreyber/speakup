@@ -1,0 +1,23 @@
+{% macro upload_card(field) %}
+    <h3 class="card-title">
+	Upload
+    </h3>
+    <ul class="list-group list-group-flush">
+	<li style="padding: 0.5rem" class="list-group-item" >
+		<div class="drop-well">
+		    <h4 > Drop here </h4>
+		    <br />
+		    <br />
+		</div>
+	</li>
+    </ul>
+    <div class="card-block">
+	<h4> Or click here </h4>
+	<div class="upload-button">
+	    <label class="btn btn-primary" style="width: 8rem;">
+		{{ field(style="display: none") }}
+		<i class="material-icons" style="font-size: 80px">file_upload</i>
+	    </label>
+	</div>
+    </div>
+{% endmacro %}

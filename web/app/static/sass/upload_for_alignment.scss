@@ -31,7 +31,6 @@
     grid-area: and-area;
 }
 
-
 .upload-card-a {
     grid-area: upload-card-a;
 }
@@ -39,11 +38,33 @@
     grid-area: record-card-a;
 }
 .upload-card-t {
-    grid-area: upload-card-a;
+    grid-area: upload-card-t;
 }
 .record-card-t {
     grid-area: record-card-t;
 }
 .submit {
     grid-area: submit;
+}
+
+
+.drop-well {
+    width: 100%;
+    height: 100%;
+    border: 1px dashed grey;
+}
+
+.upload-button {
+	width: 4rem;
+}
+
+.boxed-page-title {
+    width: 100%;
+    background-color: #8f42f4;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    box-shadow: 1px 1px 1px black;
+    h1 {
+	text-align: center;
+    }
 }
