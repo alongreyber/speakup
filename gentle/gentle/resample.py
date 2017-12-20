@@ -1,6 +1,8 @@
 import os
 import subprocess
 import tempfile
+import wave
+from shutil import copyfile
 
 from contextlib import contextmanager
 
@@ -16,6 +18,14 @@ def resample(infile, outfile):
     '''
     Use FFMPEG to convert a media file to a wav file sampled at 8K
     '''
+    # Check if the file already meets our specifications
+    try:
+        wave_file = wave.open(infile, 'rb')
+        if wave_file.getframerate() == 8000:
+            copyfile(infile,outfile)
+            return 0
+    except wave.Error as err:
+        pass
     return subprocess.call([FFMPEG,
                             '-loglevel', 'panic',
                             '-y',
