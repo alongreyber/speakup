@@ -1,5 +1,5 @@
 start: # Start minikube and dev related deployments
-	minikube start --cpus 2	
+	minikube start --cpus 2	--memory 4096
 	minikube addons enable heapster; minikube addons enable ingress
 	# Put everything that doesn't run the actual application
 	# in the dev namespace. This command creates a local registry we
@@ -16,9 +16,12 @@ update: # Update running kubernetes cluster with current code
 	docker push 127.0.0.1:30400/web:latest
 	docker build -t 127.0.0.1:30400/gentle:latest -f gentle/Dockerfile gentle
 	docker push 127.0.0.1:30400/gentle:latest
+	docker build -t 127.0.0.1:30400/audio-transcoder:latest -f audio-transcoder/Dockerfile audio-transcoder
+	docker push 127.0.0.1:30400/audio-transcoder:latest
 	kubectl apply -f manifests/
 	# Add a small change to the deployments so that a rollout is triggered
 	kubectl patch deployment web-deployment -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
+	kubectl patch deployment audio-transcoder-deployment -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
 	kubectl patch statefulsets mongo -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
 
 install: # Install dependencies. No checking for if they are already installed

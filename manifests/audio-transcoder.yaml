@@ -1,0 +1,38 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+    name: audio-transcoder-deployment
+    labels:
+        run: audio-transcoder
+    annotations:
+spec:
+    replicas: 1
+    terminationGracePeriodSeconds: 5    
+    selector:
+        matchLabels:
+            run: audio-transcoder
+    template:
+        metadata:
+            labels:
+                run: audio-transcoder
+        spec:
+            containers:
+            - name: audio-transcoder
+              image: 127.0.0.1:30400/web:latest
+              imagePullPolicy: Always
+              ports:
+              - containerPort: 80
+                name: http
+                protocol: TCP
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: audio-transcoder
+  labels:
+      run: audio-transcoder
+spec:
+  selector:
+    run: audio-transcoder
+  ports:
+  - port: 80
