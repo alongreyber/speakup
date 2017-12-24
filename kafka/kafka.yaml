@@ -6,13 +6,12 @@ metadata:
   labels:
     app: kafka
 spec:
-  type: NodePort
   ports:
   - port: 9093
     name: server
   clusterIP: None
   selector:
-    app: kafka-ui
+    app: kafka
 ---
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
@@ -83,7 +82,7 @@ spec:
           --override log.roll.jitter.hours=0 \
           --override log.segment.bytes=1073741824 \
           --override log.segment.delete.delay.ms=60000 \
-          --override message.max.bytes=1000012 \
+          --override message.max.bytes=681574400 \
           --override min.insync.replicas=1 \
           --override num.io.threads=8 \
           --override num.network.threads=3 \

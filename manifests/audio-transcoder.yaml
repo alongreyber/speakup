@@ -18,7 +18,7 @@ spec:
         spec:
             containers:
             - name: audio-transcoder
-              image: 127.0.0.1:30400/web:latest
+              image: 127.0.0.1:30400/audio-transcoder:latest
               imagePullPolicy: Always
               ports:
               - containerPort: 80

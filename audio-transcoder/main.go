@@ -3,9 +3,9 @@ package main
 import (
     "fmt"
     "io/ioutil"
+    "log"
     "os"
     "os/exec"
-    "math/rand"
     "time"
     "errors"
     "net/http"
@@ -14,9 +14,11 @@ import (
 )
 
 func main() {
+    sarama.MaxRequestSize = 681574400
+    sarama.MaxResponseSize = 681574400
     saramaConfig := sarama.NewConfig()
-    saramaConfig.Producer.RequiredAcks = sarama.WaitForAll
-    saramaClient, err := sarama.NewClient([]string{"kafka-0.kafka-svc"}, saramaConfig)
+    saramaConfig.Producer.MaxMessageBytes = 681574400
+    saramaClient, err := sarama.NewClient([]string{"kafka-0.kafka-svc:9093"}, saramaConfig)
     if err != nil {
 	panic(err)
     }
@@ -26,26 +28,20 @@ func main() {
 	TopicProcessorName:    "logging.transcoder",
 	Client:                saramaClient,
 	InputTopics:           []string{"streaming.transcoder.uploaded"},
-	InputPartitions:       []int{0, 1},
+	InputPartitions:       []int{0},
 	BatchSize:             10,
 	BatchWaitDuration:     1 * time.Second,
-	Logger:                kasper.NewJSONLogger("transcoder", false),
+	Logger:                kasper.NewJSONLogger("transcoder", true),
 	MetricsProvider:       kasper.NewPrometheus("transcoder"),
 	MetricsUpdateInterval: 60 * time.Second,
     }
 
-    rand.Seed(time.Now().UTC().UnixNano())
-
-    // One for each partition
-    messageProcessorMap := make(map[int]kasper.MessageProcessor)
-    i := 0
-    for _, _ = range messageProcessorMap {
-	messageProcessorMap[i] = &AudioTranscoder{}
-	i++
-    }
+    messageProcessorMap := map[int]kasper.MessageProcessor{
+	0 : &AudioTranscoder{}}
 
     topicProcessor := kasper.NewTopicProcessor(kasperConfig, messageProcessorMap)
-    topicProcessor.RunLoop()
+    err = topicProcessor.RunLoop()
+    log.Printf("Topic processor finished with err = %s\n", err)
 }
 
 func healthRequest(w http.ResponseWriter, r *http.Request) {
@@ -64,6 +60,7 @@ func resample(input string, output string) error {
 	"-y",
 	"-ac", "1", "-ar", "8000",
 	"-acodec", "pcm_s16le",
+	"-f", "wav",
         output }
 
     cmd := exec.Command(binary, args...)
@@ -81,6 +78,7 @@ type AudioTranscoder struct {
 }
 
 func (*AudioTranscoder) Process(messages []*sarama.ConsumerMessage, sender kasper.Sender) error {
+    log.Println("Transcoding")
     dir, err := ioutil.TempDir("","transcoding")
     if err != nil {
 	panic(err)
@@ -88,6 +86,7 @@ func (*AudioTranscoder) Process(messages []*sarama.ConsumerMessage, sender kaspe
     defer os.RemoveAll(dir)
 
     for _, message := range messages {
+	log.Println("Recieved message")
 	tmpInputFile, err := ioutil.TempFile(dir, "input")
 	if err != nil {
 	    panic(err)
@@ -114,23 +113,20 @@ func (*AudioTranscoder) Process(messages []*sarama.ConsumerMessage, sender kaspe
 	if err != nil {
 	    panic(err)
 	}
+	log.Printf("Going to send message, size: %v",len(buf))
 	out := sarama.ProducerMessage{
 	    Key : sarama.ByteEncoder(message.Key),
 	    Value : sarama.ByteEncoder(buf),
 	    Topic : "streaming.transcoder.transcoded"}
 	sender.Send(&out)
     }
-    return nil
-
-}
-func randomString(l int) string {
-    bytes := make([]byte, l)
-    for i := 0; i < l; i++ {
-        bytes[i] = byte(randInt(97, 122))
+    errs := sender.Flush()
+    if errs != nil {
+	for _, err := range errs.(sarama.ProducerErrors) {
+		log.Println("Write to kafka failed: ", err)
+	}
     }
-    return string(bytes)
-}
+    return errs
 
-func randInt(min int, max int) int {
-    return min + rand.Intn(max-min)
+
 }
