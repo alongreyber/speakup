@@ -12,19 +12,24 @@ update: # Update running kubernetes cluster with current code
 	# Start local docker registry forwarding container
 	docker run -d -e "REGIP=`minikube ip`" -p 30400:5000 chadmoon/socat:latest bash -c "socat TCP4-LISTEN:5000,fork,reuseaddr TCP4:`minikube ip`:30400" || true
 	# docker build, docker push everything
+	# web, gentle, audio-transcoder, kafka-connector
 	docker build -t 127.0.0.1:30400/web:latest -f web/Dockerfile web
 	docker push 127.0.0.1:30400/web:latest
 	docker build -t 127.0.0.1:30400/gentle:latest -f gentle/Dockerfile gentle
 	docker push 127.0.0.1:30400/gentle:latest
 	docker build -t 127.0.0.1:30400/audio-transcoder:latest -f audio-transcoder/Dockerfile audio-transcoder
 	docker push 127.0.0.1:30400/audio-transcoder:latest
-	kubectl apply -f manifests/
+	docker build -t 127.0.0.1:30400/kafka-postgres-connector:latest -f kafka-postgres-connector/Dockerfile kafka-postgres-connector
+	docker push 127.0.0.1:30400/kafka-postgres-connector:latest
+	# Apply changes. This will fail on changes to statefulsets, those must be applied manually.
+	kubectl apply -f manifests/ || true
+	kubectl apply -f manifests/postgresql/ || true
 	# Add a small change to the deployments so that a rollout is triggered
 	kubectl patch deployment web-deployment -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
 	kubectl patch deployment audio-transcoder-deployment -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
-	kubectl patch statefulsets mongo -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
+	kubectl patch deployment kafka-postgres-connector-deployment -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
 
-install: # Install dependencies. No checking for if they are already installed
+install: # Install dependencies. No checking for if they are already installed. Must be run as root.
 	sudo apt update
 	sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
 	# Docker (latest stable version)
