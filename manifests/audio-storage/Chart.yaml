@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Service for storing uploaded audio files
+name: audio-storage
+version: 0.1.0

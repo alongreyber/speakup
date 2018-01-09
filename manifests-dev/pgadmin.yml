@@ -1,0 +1,35 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+    name: pgadmin-deployment
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                app: pgadmin
+        spec:
+            containers:
+            - name: server
+              image: dpage/pgadmin4
+              imagePullPolicy: Always
+              env:
+                  - name: PGADMIN_DEFAULT_EMAIL
+                    value: alongreyber@gmail.com
+                  - name: PGADMIN_DEFAULT_PASSWORD
+                    value: telescope
+              ports:
+              - containerPort: 80
+                name: http
+                protocol: TCP              
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: pgadmin-service
+spec:
+  selector:
+      app: pgadmin
+  ports:
+  - port: 80
+  type: NodePort

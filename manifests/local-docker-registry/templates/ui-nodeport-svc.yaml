@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Release.Name}}-registry-ui-svc
+  labels:
+    app: registry-ui
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30401
+  selector:
+    app: registry-ui
+    release: {{.Release.Name}}
+  type: NodePort

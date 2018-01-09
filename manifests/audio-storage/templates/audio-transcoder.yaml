@@ -7,7 +7,6 @@ metadata:
     annotations:
 spec:
     replicas: 1
-    terminationGracePeriodSeconds: 5    
     selector:
         matchLabels:
             run: audio-transcoder

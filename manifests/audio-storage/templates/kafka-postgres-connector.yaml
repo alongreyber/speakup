@@ -1,9 +1,14 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
     name: kafka-postgres-connector-deployment
+    labels:
+        app: kafka-postgres-connector
 spec:
     replicas: 1
+    selector:
+      matchLabels:
+        app: kafka-postgres-connector
     template:
         metadata:
             labels:
@@ -11,5 +16,5 @@ spec:
         spec:
             containers:
             - name: connector
-              image: 127.0.0.1:30400/kafka-postgres-connector:latest
+              image: registry.default.svc.cluster.local:5000/kafka-postgres-connector:latest
               imagePullPolicy: Always

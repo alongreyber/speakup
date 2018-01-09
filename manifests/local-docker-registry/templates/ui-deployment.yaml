@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{.Release.Name}}-registry-ui
+  labels:
+    app: registry-ui
+    release: {{.Release.Name}}
+spec:
+  template:
+    metadata:
+      labels:
+        app: registry-ui
+        release: {{.Release.Name}}
+    spec:
+      containers:
+      - name: registryui
+        image: hyper/docker-registry-web
+        ports:
+        - containerPort: 8080
+        env:
+        - name: REGISTRY_URL
+          value: http://{{.Release.Name}}-docker-registry:5000/v2
+        - name: REGISTRY_NAME
+          value: cluster-registry

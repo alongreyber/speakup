@@ -5,12 +5,17 @@ start: # Start minikube and dev related deployments
 	# in the dev namespace. This command creates a local registry we
 	# can push docker images to
 	kubectl create namespace dev | true
-	kubectl --namespace dev apply -f manifests-dev/
+	kubectl create namespace tiller | true
+	helm init --tiller-namespace tiller
+	# Wait until tiller starts
+	until kubectl get deployments --namespace tiller -o=jsonpath='{range .items[*]}{.status.availableReplicas}' | grep 1; do sleep 1; done
+	# TODO why doesn't this wait long enough on it's own?
+	sleep 10
+	helm install --namespace dev --tiller-namespace tiller --name dev manifests/local-docker-registry
+	# Only run once per development session
 	
 update: # Update running kubernetes cluster with current code
 	./sass/update_css.sh
-	# Start local docker registry forwarding container
-	docker run -d -e "REGIP=`minikube ip`" -p 30400:5000 chadmoon/socat:latest bash -c "socat TCP4-LISTEN:5000,fork,reuseaddr TCP4:`minikube ip`:30400" || true
 	# docker build, docker push everything
 	# web, gentle, audio-transcoder, kafka-connector
 	docker build -t 127.0.0.1:30400/web:latest -f web/Dockerfile web
@@ -21,13 +26,6 @@ update: # Update running kubernetes cluster with current code
 	docker push 127.0.0.1:30400/audio-transcoder:latest
 	docker build -t 127.0.0.1:30400/kafka-postgres-connector:latest -f kafka-postgres-connector/Dockerfile kafka-postgres-connector
 	docker push 127.0.0.1:30400/kafka-postgres-connector:latest
-	# Apply changes. This will fail on changes to statefulsets, those must be applied manually.
-	kubectl apply -f manifests/ || true
-	kubectl apply -f manifests/postgresql/ || true
-	# Add a small change to the deployments so that a rollout is triggered
-	kubectl patch deployment web-deployment -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
-	kubectl patch deployment audio-transcoder-deployment -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
-	kubectl patch deployment kafka-postgres-connector-deployment -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
 
 install: # Install dependencies. No checking for if they are already installed. Must be run as root.
 	sudo apt update
@@ -52,3 +50,5 @@ install: # Install dependencies. No checking for if they are already installed. 
 	# Kubernetes client v1.6
 	curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.6.13/bin/linux/amd64/kubectl
 	chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+	# Helm
+	curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
