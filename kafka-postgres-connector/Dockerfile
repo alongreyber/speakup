@@ -10,4 +10,4 @@ WORKDIR /opt/kafka/bin
 COPY jdbc-sink.properties .
 COPY worker.properties .
 ENV CLASSPATH /usr/share/java/kafka-connect-jdbc/*
-CMD sh connect-standalone.sh worker.properties jdbc-sink.properties
+CMD ["sh", "connect-standalone.sh", "worker.properties", "jdbc-sink.properties" ]

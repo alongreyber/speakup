@@ -1,0 +1,16 @@
+{{- range $index, $size := tuple "1" "1" "1" "1" "1" "1" "2" }}
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: audio-storage-pv-{{$index}}
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: {{$size}}Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/tmp/hostpath-provisioner"
+---
+{{- end }}

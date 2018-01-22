@@ -16,5 +16,5 @@ spec:
         spec:
             containers:
             - name: connector
-              image: registry.default.svc.cluster.local:5000/kafka-postgres-connector:latest
+              image: {{.Values.imageRegistry}}:{{.Values.imageRegistryPort}}/kafka-postgres-connector:latest
               imagePullPolicy: Always
