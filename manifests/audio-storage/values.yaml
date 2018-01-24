@@ -5,5 +5,16 @@ imageRegistryPort: 30400
 etcd:
   Replicas: 1
 kafka:
+  replicas: 1
   zookeeper:
     servers: 1
+postgresql:
+  postgresUser: postgresuser
+  postgresPassword: passwordForTesting750
+
+uploadedFilesTopic: "streaming.transcoder.uploaded"
+transcodedFilesTopic: "streaming.transcoder.transcoded"
+
+Transcoder:
+  MaxMessageSize: 681574400
+  LoggingTopic: "logging.transcoder"

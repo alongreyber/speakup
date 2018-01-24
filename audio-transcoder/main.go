@@ -11,14 +11,27 @@ import (
     "net/http"
     "github.com/Shopify/sarama"
     "github.com/movio/kasper"
+    "strconv"
 )
 
 func main() {
-    sarama.MaxRequestSize = 681574400
-    sarama.MaxResponseSize = 681574400
+    maxMessageSize := os.Getenv("MAX_MESSAGE_SIZE")
+    kafkaAddress := os.Getenv("KAKFA_BROKER_URL")
+    loggingTopic := os.Getenv("LOGGING_TOPIC")
+    inputTopic := os.Getenv("INPUT_TOPIC")
+    outputTopic := os.Getenv("OUTPUT_TOPIC")
+
+    _, atoi_err := strconv.Atoi(maxMessageSize)
+    if maxMessageSize == "" || kafkaAddress == "" || loggingTopic == "" ||
+    	inputTopic == "" || outputTopic == "" || atoi_err != nil {
+	    panic("Config not correct")
+	}
+
+    sarama.MaxRequestSize = strconv.Atoi(maxMessageSize)
+    sarama.MaxResponseSize = sarama.MaxRequestSize
     saramaConfig := sarama.NewConfig()
-    saramaConfig.Producer.MaxMessageBytes = 681574400
-    saramaClient, err := sarama.NewClient([]string{"kafka-0.kafka-svc:9093"}, saramaConfig)
+    saramaConfig.Producer.MaxMessageBytes = sarama.MaxRequestSize
+    saramaClient, err := sarama.NewClient([]string{kafkaAddress}, saramaConfig)
     if err != nil {
 	panic(err)
     }
@@ -27,7 +40,7 @@ func main() {
 	// Topic used for logging
 	TopicProcessorName:    "logging.transcoder",
 	Client:                saramaClient,
-	InputTopics:           []string{"streaming.transcoder.uploaded"},
+	InputTopics:           []string{inputTopic},
 	InputPartitions:       []int{0},
 	BatchSize:             10,
 	BatchWaitDuration:     1 * time.Second,
@@ -117,7 +130,7 @@ func (*AudioTranscoder) Process(messages []*sarama.ConsumerMessage, sender kaspe
 	out := sarama.ProducerMessage{
 	    Key : sarama.ByteEncoder(message.Key),
 	    Value : sarama.ByteEncoder(buf),
-	    Topic : "streaming.transcoder.transcoded"}
+	    Topic : outputTopic}
 	sender.Send(&out)
     }
     errs := sender.Flush()

@@ -23,6 +23,17 @@ spec:
               - containerPort: 80
                 name: http
                 protocol: TCP
+              env:
+              - name: MAX_MESSAGE_SIZE
+                value: {{.Values.Transcoder.MaxMessageSize}}
+              - name: KAFKA_BROKER_URL
+                value: {{.Release.Name}}-kafka-0:9092
+              - name: LOGGING_TOPIC
+                value: {{.Values.Transcoder.LoggingTopic}}
+              - name: INPUT_TOPIC
+                value: {{.Values.uploadedFilesTopic}}
+              - name: OUTPUT_TOPIC
+                value: {{.Values.transcodedFilesTopic}}
 ---
 kind: Service
 apiVersion: v1

@@ -1,12 +1,9 @@
 dependencies:
-- name: etcd
-  repository: https://kubernetes-charts-incubator.storage.googleapis.com/
-  version: 0.3.6
 - name: kafka
   repository: https://kubernetes-charts-incubator.storage.googleapis.com/
   version: 0.2.11
 - name: postgresql
   repository: https://kubernetes-charts.storage.googleapis.com/
-  version: 0.8.5
-digest: sha256:4f88ac75908f3d58c65466d8a3b0cd92b95f91d4666294b6a4b0083036efc464
-generated: 2018-01-11T11:20:55.931085769-05:00
+  version: 0.8.7
+digest: sha256:b41bf890f9e03f4650d3cc2318e9a746a2f3ca3b048c0ae1ef01d51bf8bee4cd
+generated: 2018-01-22T18:11:16.461351523-05:00

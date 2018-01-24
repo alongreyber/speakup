@@ -1,4 +1,5 @@
 start: # Start minikube and dev related deployments
+	minikube delete || true
 	minikube start --cpus 2	--memory 8192
 	# Put everything that doesn't run the actual application
 	# in the dev namespace. This command creates a local registry we
@@ -13,7 +14,7 @@ start: # Start minikube and dev related deployments
 	until helm install --tiller-namespace tiller --namespace dev --name dev manifests/local-docker-registry; do sleep 5; done
 	# Forwards HTTP to HTTPS as required by docker registry
 	# TODO make this not necessary. It will be a lot of work
-	docker run -d -e "REGIP=`minikube ip`" -p 30400:5000 chadmoon/socat:latest bash -c "socat TCP4-LISTEN:5000,fork,reuseaddr TCP4:`minikube ip`:30400" || true
+	docker run -d -e "REGIP=`minikube ip`" -p 30400:5000 chadmoon/socat:latest bash -c "socat TCP4-LISTEN:5000,fork,reuseaddr TCP4:`minikube ip`:30400" | true
 	# -------------------------------------
 	# Only run once per development session
 	# -------------------------------------
@@ -34,7 +35,8 @@ update: # Update running kubernetes cluster with current code
 	helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
 	helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 	helm dep update manifests/audio-storage
-	helm delete --tiller-namespace tiller $(shell helm --tiller-namespace tiller list | grep audio-storage | cut -f1) || true
+	helm delete --tiller-namespace tiller $(shell helm --tiller-namespace tiller list | grep audio-storage | cut -f1) | true
+	kubectl delete --all pv && kubectl delete --all pvc
 	helm install --tiller-namespace tiller manifests/audio-storage
 	
 
