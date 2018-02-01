@@ -8,10 +8,3 @@ spec:
     image: python:3
     command: [ "/bin/bash", "-c", "--" ]
     args: [ "while true; do sleep 30; done;" ]
-    volumeMounts:
-        - name: config-volume
-          mountPath: /etc/config
-  volumes:
-    - name: config-volume
-      configMap:
-        name: dev-config

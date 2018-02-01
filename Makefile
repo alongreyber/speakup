@@ -36,7 +36,7 @@ update: # Update running kubernetes cluster with current code
 	helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 	helm dep update manifests/audio-storage
 	helm delete --tiller-namespace tiller $(shell helm --tiller-namespace tiller list | grep audio-storage | cut -f1) | true
-	kubectl delete --all pv && kubectl delete --all pvc
+	kubectl delete --all pv && kubectl delete --all pvc && kubectl delete --all configmaps && kubectl delete --all statefulsets
 	helm install --tiller-namespace tiller manifests/audio-storage
 	
 

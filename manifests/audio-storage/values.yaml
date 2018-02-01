@@ -9,12 +9,12 @@ kafka:
   zookeeper:
     servers: 1
 postgresql:
-  postgresUser: postgresuser
+  postgresUser: postgres
   postgresPassword: passwordForTesting750
 
 uploadedFilesTopic: "streaming.transcoder.uploaded"
 transcodedFilesTopic: "streaming.transcoder.transcoded"
 
 Transcoder:
-  MaxMessageSize: 681574400
+  MaxMessageSize: "681574400"
   LoggingTopic: "logging.transcoder"

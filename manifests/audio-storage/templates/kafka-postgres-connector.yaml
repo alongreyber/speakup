@@ -21,6 +21,9 @@ spec:
               volumeMounts:
                 - name: jdbc-sink-config
                   mountPath: /etc/config
+              env:
+                - name: CONNECT_LOG4J_ROOT_LOGLEVEL
+                  value: TRACE
             volumes:
             - name: jdbc-sink-config
               configMap:
@@ -60,3 +63,4 @@ data:
     offset.storage.file.filename=/tmp/connect.offsets
     # Flush much faster than normal, which is useful for testing/debugging
     offset.flush.interval.ms=10000
+    logging.level=DEBUG

@@ -14,23 +14,26 @@ import (
     "strconv"
 )
 
+var outputTopic string
+
 func main() {
     maxMessageSize := os.Getenv("MAX_MESSAGE_SIZE")
-    kafkaAddress := os.Getenv("KAKFA_BROKER_URL")
+    kafkaAddress := os.Getenv("KAFKA_BROKER_URL")
     loggingTopic := os.Getenv("LOGGING_TOPIC")
     inputTopic := os.Getenv("INPUT_TOPIC")
-    outputTopic := os.Getenv("OUTPUT_TOPIC")
+    outputTopic = os.Getenv("OUTPUT_TOPIC")
 
     _, atoi_err := strconv.Atoi(maxMessageSize)
     if maxMessageSize == "" || kafkaAddress == "" || loggingTopic == "" ||
     	inputTopic == "" || outputTopic == "" || atoi_err != nil {
-	    panic("Config not correct")
+	    panic("Config not correct: ")
 	}
 
-    sarama.MaxRequestSize = strconv.Atoi(maxMessageSize)
+    maxMessageSizeInt, atoi_err := strconv.ParseInt(maxMessageSize, 10, 16)
+    sarama.MaxRequestSize = int32(maxMessageSizeInt)
     sarama.MaxResponseSize = sarama.MaxRequestSize
     saramaConfig := sarama.NewConfig()
-    saramaConfig.Producer.MaxMessageBytes = sarama.MaxRequestSize
+    saramaConfig.Producer.MaxMessageBytes = int(sarama.MaxRequestSize)
     saramaClient, err := sarama.NewClient([]string{kafkaAddress}, saramaConfig)
     if err != nil {
 	panic(err)
