@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-    name: kafka-postgres-connector-deployment
+    name: {{.Release.Name}}-kafka-postgres-connector-deployment
     labels:
         app: kafka-postgres-connector
 spec:
@@ -14,53 +14,54 @@ spec:
             labels:
                 app: kafka-postgres-connector
         spec:
-            containers:
-            - name: connector
-              image: {{.Values.imageRegistry}}:{{.Values.imageRegistryPort}}/kafka-postgres-connector:latest
-              imagePullPolicy: Always
-              volumeMounts:
-                - name: jdbc-sink-config
-                  mountPath: /etc/config
-              env:
-                - name: CONNECT_LOG4J_ROOT_LOGLEVEL
-                  value: TRACE
             volumes:
             - name: jdbc-sink-config
               configMap:
                 name: jdbc-sink-configmap
+            containers:
+            - name: connector
+              image: confluentinc/cp-kafka-connect 
+              imagePullPolicy: Always
+              ports:
+              - containerPort: 8083
+                name: rest
+                protocol: TCP
+              volumeMounts:
+              - name: jdbc-sink-config
+                mountPath: /etc/config
+              command: ["connect-standalone", "/etc/config/worker.properties", "/etc/config/jdbc-sink.properties"]
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: jdbc-sink-configmap
 data:
-  jdbc-sink.properties: |
+  worker.properties: |+
+    bootstrap.servers={{.Release.Name}}-kafka:9092
+    key.converter=org.apache.kafka.connect.storage.StringConverter
+    value.converter=org.apache.kafka.connect.json.JsonConverter
+    value.converter.schemas.enable=true
+    internal.key.converter=org.apache.kafka.connect.json.JsonConverter
+    internal.value.converter=org.apache.kafka.connect.json.JsonConverter
+    offset.storage.file.filename=/tmp/connect.offsets
+    log4j.root.loglevel=DEBUG
+    plugin.path=/usr/share/java
+  jdbc-sink.properties: |+
     name=audio-save
     connector.class=io.confluent.connect.jdbc.JdbcSinkConnector
     tasks.max=1
     topics={{.Values.transcodedFilesTopic}}
-    connection.url=jdbc:sqlite:{{.Release.Name}}-postgresql
+    connection.url=jdbc:postgresql://{{.Release.Name}}-postgresql/postgres
     connection.user={{.Values.postgresql.postgresUser}}
     connection.password={{.Values.postgresql.postgresPassword}}
     auto.create=true
-  worker.properties: |+
-    # These are defaults. This file just demonstrates how to override some settings.
-    bootstrap.servers={{.Release.Name}}-kafka:9092
-    # The converters specify the format of data in Kafka and how to translate it into Connect data. Every Connect user will
-    # need to configure these based on the format they want their data in when loaded from or stored into Kafka
-    key.converter=org.apache.kafka.connect.json.JsonConverter
-    value.converter=org.apache.kafka.connect.json.JsonConverter
-    # Converter-specific settings can be passed in by prefixing the Converter's setting with the converter we want to apply
-    # it to
-    key.converter.schemas.enable=true
-    value.converter.schemas.enable=true
-    # The internal converter used for offsets and config data is configurable and must be specified, but most users will
-    # always want to use the built-in default. Offset and config data is never visible outside of Kafka Connect in this format.
-    internal.key.converter=org.apache.kafka.connect.json.JsonConverter
-    internal.value.converter=org.apache.kafka.connect.json.JsonConverter
-    internal.key.converter.schemas.enable=false
-    internal.value.converter.schemas.enable=false
-    offset.storage.file.filename=/tmp/connect.offsets
-    # Flush much faster than normal, which is useful for testing/debugging
-    offset.flush.interval.ms=10000
-    logging.level=DEBUG
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{.Release.Name}}-kafka-postgres-connector
+spec:
+  selector:
+    app: kafka-postgres-connector
+  ports:
+  - port: 8083

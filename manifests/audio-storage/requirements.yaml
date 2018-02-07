@@ -1,10 +1,10 @@
 dependencies:
-  #  - name: etcd
-  #  version: ~0.3.6
-  #  repository: https://kubernetes-charts-incubator.storage.googleapis.com/
   - name: kafka
     version: ~0.2.11
     repository: https://kubernetes-charts-incubator.storage.googleapis.com/
+#  - name: schema-registry
+#    version: ~0.1.0
+#    repository: http://storage.googleapis.com/kubernetes-charts-incubator/
   - name: postgresql
     version: ~0.8.5
     repository: https://kubernetes-charts.storage.googleapis.com/
