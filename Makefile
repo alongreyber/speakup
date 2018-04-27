@@ -18,9 +18,8 @@ start: # Start minikube and dev related deployments
 	# -------------------------------------
 	# Only run once per development session
 	# -------------------------------------
-	
 
-update: # Update running kubernetes cluster with current code
+build:
 	./sass/update_css.sh
 	# docker build, docker push everything
 	# web, gentle, audio-transcoder, kafka-connector
@@ -30,6 +29,9 @@ update: # Update running kubernetes cluster with current code
 	docker push 127.0.0.1:30400/gentle:latest
 	docker build -t 127.0.0.1:30400/audio-transcoder:latest -f audio-transcoder/Dockerfile audio-transcoder
 	docker push 127.0.0.1:30400/audio-transcoder:latest
+
+
+recreate: build # Update running kubernetes cluster with current code
 	helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
 	helm repo add another-incubator http://storage.googleapis.com/kubernetes-charts-incubator/
 	helm repo add stable https://kubernetes-charts.storage.googleapis.com/
@@ -37,6 +39,9 @@ update: # Update running kubernetes cluster with current code
 	helm delete --tiller-namespace tiller $(shell helm --tiller-namespace tiller list | grep audio-storage | cut -f1) | true
 	kubectl delete --all pv && kubectl delete --all pvc && kubectl delete --all configmaps && kubectl delete --all statefulsets
 	helm install --tiller-namespace tiller manifests/audio-storage
+
+update: build
+	helm --tiller-namespace tiller upgrade --recreate-pods --force $(shell helm --tiller-namespace tiller list | grep audio-storage | cut -f1) audio-storage	
 	
 
 install: # Install dependencies. No checking for if they are already installed. Must be run as root.

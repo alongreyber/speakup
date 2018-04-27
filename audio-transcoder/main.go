@@ -15,8 +15,27 @@ import (
 )
 
 var outputTopic string
+var psqlSchema string
 
 func main() {
+    psqlSchema = 
+    	`
+	"schema": {
+        "type": "struct",
+        "fields": [{
+		"type": "string",
+		"optional": false,
+		"field": "id"
+	    }, {
+		"type": "bytes",
+		"optional": false,
+		"field": "file"
+	    }],
+        "optional": false,
+        "name": "audiostorage"
+    	}
+	`
+
     maxMessageSize := os.Getenv("MAX_MESSAGE_SIZE")
     kafkaAddress := os.Getenv("KAFKA_BROKER_URL")
     loggingTopic := os.Getenv("LOGGING_TOPIC")
@@ -26,7 +45,7 @@ func main() {
     _, atoi_err := strconv.Atoi(maxMessageSize)
     if maxMessageSize == "" || kafkaAddress == "" || loggingTopic == "" ||
     	inputTopic == "" || outputTopic == "" || atoi_err != nil {
-	    panic("Config not correct: ")
+	    panic("Config not correct")
 	}
 
     maxMessageSizeInt, atoi_err := strconv.ParseInt(maxMessageSize, 10, 16)
@@ -38,6 +57,7 @@ func main() {
     if err != nil {
 	panic(err)
     }
+    log.Printf("Initialized Sarama client")
 
     kasperConfig := &kasper.Config{
 	// Topic used for logging
@@ -129,10 +149,12 @@ func (*AudioTranscoder) Process(messages []*sarama.ConsumerMessage, sender kaspe
 	if err != nil {
 	    panic(err)
 	}
-	log.Printf("Going to send message, size: %v",len(buf))
+
+	outMessage := fmt.Sprintf(`{%s,"payload" : {"id" : %s, "file" : %s} }`, psqlSchema, message.Key, buf)
+
 	out := sarama.ProducerMessage{
-	    Key : sarama.ByteEncoder(message.Key),
-	    Value : sarama.ByteEncoder(buf),
+	    Key : sarama.StringEncoder(""),
+	    Value : sarama.StringEncoder(outMessage),
 	    Topic : outputTopic}
 	sender.Send(&out)
     }
